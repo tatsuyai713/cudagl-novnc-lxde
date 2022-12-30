@@ -7,15 +7,16 @@ NAME_IMAGE="cudagl_devenv_ws_${USER}"
 # Make Container
 if [ ! "$(docker image ls -q ${NAME_IMAGE})" ]; then
 	if [ ! $# -ne 1 ]; then
-		if [ "setup" = $1 ]; then
+		if [ "build" = $1 ]; then
 		    mkdir -p ssl
 			openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/nginx.key -out ssl/nginx.crt
 			echo "Image ${NAME_IMAGE} does not exist."
 			echo 'Now building image without proxy...'
 			docker build --file=./Dockerfile -t $NAME_IMAGE . --build-arg UID=$(id -u) --build-arg GID=$(id -g) --build-arg UNAME=$USER
+			exit
 		fi
 	else
-		echo "Docker image not found. Please setup first!"
+		echo "Docker image not found. Please build first!"
 		exit
   	fi
 fi
@@ -63,7 +64,7 @@ DOCKER_OPT="${DOCKER_OPT} \
 		--env=QT_X11_NO_MITSHM=1 \
         --volume=/home/${USER}:/home/${USER}/host_home:rw \
         --env=DISPLAY=${DISPLAY} \
-		-p $(id -u):443 -e SSL_PORT=443 -v ${PWD}/ssl:/etc/nginx/ssl -e RESOLUTION=${RESOLUTION}\
+		-p $(id -u):443 -e SSL_PORT=443 -v ${PWD}/ssl:/etc/nginx/ssl -e RESOLUTION=${RESOLUTION} -e VNC_PASSWORD=on \
         -w ${DOCKER_WORK_DIR} \
         -u ${USER} \
         --hostname `hostname`-Docker-${USER} \
