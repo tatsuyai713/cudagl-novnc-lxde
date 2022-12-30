@@ -43,8 +43,8 @@ if [ ! $# -ne 1 ]; then
 	fi
 fi
 
-XSOCK=/tmp/.X11-unix
-XAUTH=/tmp/.docker.xauth
+XSOCK=/tmp/.$USER.X11-unix
+XAUTH=/tmp/.$USER.docker.xauth
 touch $XAUTH
 xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
 
@@ -54,8 +54,8 @@ DOCKER_WORK_DIR="/home/${USER}"
 
 ## For XWindow
 DOCKER_OPT="${DOCKER_OPT} \
-		--volume=$XSOCK:$XSOCK:rw \
-		--volume=$XAUTH:$XAUTH:rw \
+		--volume=$XSOCK:/tmp/.X11-unix:rw \
+		--volume=$XAUTH:/tmp/.docker.xauth:rw \
 		--shm-size=1gb \
 		--env="XAUTHORITY=${XAUTH}" \
 		--env="DISPLAY=${DISPLAY}" \
