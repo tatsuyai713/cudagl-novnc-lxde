@@ -141,6 +141,24 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/* /tmp/a.txt /tmp/b.txt
 
+USER root
+RUN chmod 777 /var/log/supervisor/
+
+ARG XDG_RUNTIME_DIR="/tmp/xdg_runtime_dir"
+RUN mkdir -p ${XDG_RUNTIME_DIR} && chmod 777 ${XDG_RUNTIME_DIR}
+
+USER $USERNAME
+SHELL ["/bin/bash", "-l", "-c"]
+RUN echo "export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json" >> ~/.bashrc
+RUN echo "export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}" >> ~/.bashrc
+
+RUN mkdir ~/.dbus
+
+
+USER root
+RUN chown -R $USERNAME:$USERNAME /home/$USERNAME
+
+
 
 ################################################################################
 # builder
@@ -189,20 +207,6 @@ RUN ln -sf /usr/local/lib/web/frontend/static/websockify /usr/local/lib/web/fron
 # ENV HOME=/home/$USERNAME \
 #     SHELL=/bin/bash
 
-
-ARG XDG_RUNTIME_DIR="/tmp/xdg_runtime_dir"
-RUN mkdir -p ${XDG_RUNTIME_DIR} && chmod 777 ${XDG_RUNTIME_DIR}
-
-USER $USERNAME
-WORKDIR /home/$USERNAME/
-SHELL ["/bin/bash", "-l", "-c"]
-RUN echo "export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json" >> ~/.bashrc
-RUN echo "export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}" >> ~/.bashrc
-
-
-RUN mkdir /home/$USERNAME/.dbus
-RUN chown -R $USERNAME:$USERNAME /home/$USERNAME/
-RUN chmod 777 /var/log/supervisor/
 
 HEALTHCHECK --interval=30s --timeout=5s CMD curl --fail http://127.0.0.1:6079/api/health
 # ENTRYPOINT ["/startup.sh"]
