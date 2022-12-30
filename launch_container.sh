@@ -1,6 +1,7 @@
 #!/bin/sh
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
+VNC_PASSWORD="on"
 RESOLUTION="1920x1080"
 NAME_IMAGE="cudagl_devenv_ws_${USER}"
 
@@ -64,7 +65,7 @@ DOCKER_OPT="${DOCKER_OPT} \
 		--env=QT_X11_NO_MITSHM=1 \
         --volume=/home/${USER}:/home/${USER}/host_home:rw \
         --env=DISPLAY=${DISPLAY} \
-		-p $(id -u):443 -e SSL_PORT=443 -v ${PWD}/ssl:/etc/nginx/ssl -e RESOLUTION=${RESOLUTION} -e VNC_PASSWORD=on \
+		-p $(id -u):443 -e SSL_PORT=443 -v ${PWD}/ssl:/etc/nginx/ssl -e RESOLUTION=${RESOLUTION} -e VNC_PASSWORD=${VNC_PASSWORD} \
         -w ${DOCKER_WORK_DIR} \
         -u ${USER} \
         --hostname `hostname`-Docker-${USER} \

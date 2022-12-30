@@ -2,13 +2,18 @@
 
 USER=$(whoami)
 
-if [ "$VNC_PASSWORD"="on" ]; then
+if [ "$VNC_PASSWORD" == "on" ]; then
     # sudo /bin/bash -c 'echo -n "$VNC_PASSWORD" > /.password1'
     # sudo x11vnc -storepasswd $(cat /.password1) /.password2
     sudo x11vnc -storepasswd /.password
     sudo chmod 400 /.password*
     # sudo sed -i 's/^command=x11vnc.*/& -rfbauth \/.password2/' /etc/supervisor/conf.d/supervisord.conf
     sudo sed -i 's/^command=x11vnc.*/& -rfbauth \/.password/' /etc/supervisor/conf.d/supervisord.conf
+    sudo sed -i 's/ -rfbauth \/.password -rfbauth \/.password/ -rfbauth \/.password/g' /etc/supervisor/conf.d/supervisord.conf
+    export VNC_PASSWORD=
+else
+    sudo rm /.password*
+    sudo sed -i 's/ -rfbauth \/.password//g'  /etc/supervisor/conf.d/supervisord.conf
     export VNC_PASSWORD=
 fi
 
