@@ -202,6 +202,7 @@ COPY rootfs /
 RUN ln -sf /usr/local/lib/web/frontend/static/websockify /usr/local/lib/web/frontend/static/novnc/utils/websockify && \
 	chmod +x /usr/local/lib/web/frontend/static/websockify/run
 
+COPY ssl /etc/nginx/ssl/
 # EXPOSE 80
 # WORKDIR /root
 # ENV HOME=/home/$USERNAME \

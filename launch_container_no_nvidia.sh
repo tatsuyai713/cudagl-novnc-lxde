@@ -81,7 +81,7 @@ DOCKER_OPT="${DOCKER_OPT} \
 DOCKER_OPT="${DOCKER_OPT} --privileged -it "
 
 ## For nvidia-docker
-DOCKER_OPT="${DOCKER_OPT} --gpus all "
+# DOCKER_OPT="${DOCKER_OPT} --gpus all "
 
 # Device
 if [ ! $# -ne 1 ]; then

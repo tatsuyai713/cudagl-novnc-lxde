@@ -36,6 +36,8 @@ sudo chmod +x /usr/local/bin/xvfb.sh
 HOME=/home/$USER
 if [ "$USER" != "root" ]; then
     echo "* enable custom user: $USER"
+    PORT=$(id -u $USER)
+    echo "* port number: $PORT"
     # #useradd --create-home --shell /bin/bash --user-group --groups adm,sudo $USER
     # if [ -z "$PASSWORD" ]; then
     #     echo "  set default password to \"ubuntu\""
