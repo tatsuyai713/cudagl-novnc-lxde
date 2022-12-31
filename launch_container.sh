@@ -20,6 +20,9 @@ if [ ! "$(docker image ls -q ${NAME_IMAGE})" ]; then
 		echo "Docker image not found. Please build first!"
 		exit
   	fi
+else
+	echo "Docker image is already built!"
+	exit
 fi
 
 # Commit
