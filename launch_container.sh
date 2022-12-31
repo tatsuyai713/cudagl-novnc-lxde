@@ -21,8 +21,12 @@ if [ ! "$(docker image ls -q ${NAME_IMAGE})" ]; then
 		exit
   	fi
 else
-	echo "Docker image is already built!"
-	exit
+	if [ ! $# -ne 1 ]; then
+		if [ "build" = $1 ]; then
+			echo "Docker image is already built!"
+			exit
+		fi
+	fi
 fi
 
 # Commit
