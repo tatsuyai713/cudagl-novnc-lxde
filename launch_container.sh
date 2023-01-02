@@ -52,8 +52,8 @@ if [ ! $# -ne 1 ]; then
 	fi
 fi
 
-XSOCK=/tmp/.$USER.X11-unix
-XAUTH=/tmp/.$USER.docker.xauth
+XSOCK=/tmp/.X11-unix
+XAUTH=/tmp/.docker.xauth
 touch $XAUTH
 xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
 
